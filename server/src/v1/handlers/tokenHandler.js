@@ -16,7 +16,7 @@ const tokenDecode = (req) => {
 	} catch (err) {
 		return false;
 	}
-};
+}; 
 
 exports.verifyToken = async (req, res, next) => {
 	const tokenDecoded = tokenDecode(req);
