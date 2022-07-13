@@ -17,6 +17,7 @@ router.post(
 		.isLength({ min: 8 })
 		.withMessage('Password confirmation must be at least 8 characters'),
 	body('username').custom((value) => {
+		console.log(value);
 		return User.findOne({ username: value }).then((user) => {
 			if (user) {
 				return Promise.reject('Username is already used');
@@ -28,7 +29,7 @@ router.post(
 );
 
 router.post(
-	'login',
+	'/login',
 	body('username')
 		.isLength({ min: 8 })
 		.withMessage('Username must be at least 8 characters'),
@@ -42,3 +43,5 @@ router.post(
 router.post('verify-token', tokenHandler.verifyToken, (req, res) => {
 	res.status(200).json({ user: req.user });
 });
+
+module.exports = router;
