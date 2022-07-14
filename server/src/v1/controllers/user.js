@@ -15,7 +15,7 @@ exports.register = async (req, res) => {
 			process.env.TOKEN_SECRET_KEY,
 			{ expiresIn: '24h' }
 		);
-		req.status(201).json({ user, token });
+		res.status(201).json({ user, token });
 	} catch (err) {
 		res.status(500).json(err);
 	}
@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
 		const user = await User.findOne({ username }).select('password username');
 		if (!user) {
 			return res.status(401).json({
-				errorrs: [
+				errors: [
 					{
 						param: 'username',
 						msg: 'Invalid username or password',
@@ -35,6 +35,7 @@ exports.login = async (req, res) => {
 				],
 			});
 		}
+
 		const decryptedPass = CryptoJS.AES.decrypt(
 			user.password,
 			process.env.PASSWORD_SECRET_KEY
@@ -42,7 +43,7 @@ exports.login = async (req, res) => {
 
 		if (decryptedPass !== password) {
 			return res.status(401).json({
-				errorrs: [
+				errors: [
 					{
 						param: 'username',
 						msg: 'Invalid username or password',
@@ -50,6 +51,9 @@ exports.login = async (req, res) => {
 				],
 			});
 		}
+
+		user.password = undefined;
+
 		const token = jsonwebtoken.sign(
 			{ id: user._id },
 			process.env.TOKEN_SECRET_KEY,

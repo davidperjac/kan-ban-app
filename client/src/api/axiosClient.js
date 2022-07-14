@@ -1,22 +1,15 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-const baseUrl = 'http://localhost:3001/api/v1';
+const baseURL = 'http://127.0.0.1:3001/api/v1/';
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({
-	baseUrl: baseUrl,
+	baseURL: baseURL,
 	paramsSerializer: (params) => queryString.stringify({ params }),
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-	console.log({
-		...config,
-		headers: {
-			'Content-Type': 'application/json',
-			authorization: `Bearer ${getToken()}`,
-		},
-	});
 	return {
 		...config,
 		headers: {
@@ -31,6 +24,7 @@ axiosClient.interceptors.response.use(
 		if (response && response.data) {
 			return response.data;
 		}
+		return response;
 	},
 	(err) => {
 		if (!err.response) {

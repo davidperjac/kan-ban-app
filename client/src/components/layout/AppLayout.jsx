@@ -10,9 +10,9 @@ const AppLayout = () => {
 	const [loading, setLoading] = useState(false);
 	useEffect(() => {
 		const checkAuth = async () => {
-			const isAuth = await authUtils.isAuthenticated();
-			if (!isAuth) {
-				navigate('/login');
+			const user = await authUtils.isAuthenticated();
+			if (!user) {
+				navigate('/');
 			} else {
 				//save user
 				setLoading(false);

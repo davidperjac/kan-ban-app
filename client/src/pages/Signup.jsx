@@ -54,7 +54,6 @@ const Signup = () => {
 				password,
 				confirmPassword,
 			});
-			console.log(res);
 			setLoading(false);
 			localStorage.setItem('token', res.token);
 			navigate('/');
@@ -88,6 +87,7 @@ const Signup = () => {
 					disabled={loading}
 					error={usernameErrText !== ''}
 					helperText={usernameErrText}
+					autoComplete="false"
 				/>
 				<TextField
 					margin="normal"
@@ -100,6 +100,7 @@ const Signup = () => {
 					disabled={loading}
 					error={passwordErrText !== ''}
 					helperText={passwordErrText}
+					autoComplete="false"
 				/>
 				<TextField
 					margin="normal"
@@ -112,6 +113,7 @@ const Signup = () => {
 					disabled={loading}
 					error={confirmPasswordErrText !== ''}
 					helperText={confirmPasswordErrText}
+					autoComplete="false"
 				/>
 				<LoadingButton
 					loading={loading}
