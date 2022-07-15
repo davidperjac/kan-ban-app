@@ -1,9 +1,9 @@
-import { Box } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useDispatch } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice';
-import boardApi from '../api/boardApi';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import boardApi from '../api/boardApi';
+import { Box } from '@mui/material';
 import { useState } from 'react';
 
 const Home = () => {
