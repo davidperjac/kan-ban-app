@@ -33,11 +33,11 @@ const Board = () => {
 		const getBoard = async () => {
 			try {
 				const res = await boardApi.getOne(boardId);
-				const { title, description, sections, isFavourite, icon } = res;
+				const { title, description, sections, favourite, icon } = res;
 				setTitle(title);
 				setDescription(description);
 				setSections(sections);
-				setIsFavourite(isFavourite);
+				setIsFavourite(favourite);
 				setIcon(icon);
 			} catch (err) {
 				alert(err);
@@ -97,6 +97,17 @@ const Board = () => {
 		}, timeout);
 	};
 
+	const addFavourite = async () => {
+		try {
+			await boardApi.update(boardId, { favourite: !isFavourite });
+			setIsFavourite(!isFavourite);
+		} catch (err) {
+			alert(err);
+		}
+	};
+
+	console.log(isFavourite);
+
 	return (
 		<>
 			<Box
@@ -107,7 +118,7 @@ const Board = () => {
 					width: '100%',
 				}}
 			>
-				<IconButton variant="outlined">
+				<IconButton variant="outlined" onClick={addFavourite}>
 					{isFavourite ? (
 						<StarOutlinedIcon color="warning" />
 					) : (
