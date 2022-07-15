@@ -69,6 +69,7 @@ const Sidebar = () => {
 
 		const activeItem = newList.findIndex((e) => e._id === boardId);
 		setActiveIndex(activeItem);
+		dispatch(setBoards(newList));
 
 		try {
 			await boardApi.updatePosition({ boards: newList });

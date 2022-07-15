@@ -16,6 +16,9 @@ import EmojiPicker from '../components/common/EmojiPicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice.js';
 
+let timer;
+const timeout = 500;
+
 const Board = () => {
 	const dispatch = useDispatch();
 	const [title, setTitle] = useState('');
@@ -56,6 +59,44 @@ const Board = () => {
 		}
 	};
 
+	const updateTitle = async (e) => {
+		clearTimeout(timer);
+		const newTitle = e.target.value;
+		setTitle(newTitle);
+
+		let temp = [...boards];
+		const index = temp.findIndex((e) => e._id === boardId);
+		temp[index] = { ...temp[index], title: newTitle };
+		dispatch(setBoards(temp));
+
+		timer = setTimeout(async () => {
+			try {
+				await boardApi.update(boardId, { title: newTitle });
+			} catch (err) {
+				alert(err);
+			}
+		}, timeout);
+	};
+
+	const updateDescription = async (e) => {
+		clearTimeout(timer);
+		const newDescription = e.target.value;
+		setDescription(newDescription);
+
+		let temp = [...boards];
+		const index = temp.findIndex((e) => e._id === boardId);
+		temp[index] = { ...temp[index], description: newDescription };
+		dispatch(setBoards(temp));
+
+		timer = setTimeout(async () => {
+			try {
+				await boardApi.update(boardId, { description: newDescription });
+			} catch (err) {
+				alert(err);
+			}
+		}, timeout);
+	};
+
 	return (
 		<>
 			<Box
@@ -82,7 +123,7 @@ const Board = () => {
 					<EmojiPicker icon={icon} onChange={onIconChange} />
 					<TextField
 						value={title}
-						// onChange={updateTitle}
+						onChange={updateTitle}
 						placeholder="Untitled"
 						variant="outlined"
 						fullWidth
@@ -97,7 +138,7 @@ const Board = () => {
 					/>
 					<TextField
 						value={description}
-						// onChange={updateDescription}
+						onChange={updateDescription}
 						placeholder="Add a description"
 						variant="outlined"
 						multiline
