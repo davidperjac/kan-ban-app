@@ -105,9 +105,6 @@ const Board = () => {
 			alert(err);
 		}
 	};
-
-	console.log(isFavourite);
-
 	return (
 		<>
 			<Box
