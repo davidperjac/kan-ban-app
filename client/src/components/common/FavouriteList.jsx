@@ -24,17 +24,22 @@ const FavouriteList = () => {
 		getBoards();
 	}, []);
 
+	useEffect(() => {
+		const index = list.findIndex((e) => e._id === boardId);
+		setActiveIndex(index);
+	}, [list, boardId]);
+
 	const onDragEnd = async ({ source, destination }) => {
-		const newList = [...boards];
+		const newList = [...list];
 		const [removed] = newList.splice(source.index, 1);
 		newList.splice(destination.index, 0, removed);
 
 		const activeItem = newList.findIndex((e) => e._id === boardId);
 		setActiveIndex(activeItem);
-		dispatch(setBoards(newList));
+		dispatch(setFavouriteList(newList));
 
 		try {
-			await boardApi.updatePosition({ boards: newList });
+			await boardApi.updateFavouritePosition({ boards: newList });
 		} catch (err) {
 			alert(err);
 		}
