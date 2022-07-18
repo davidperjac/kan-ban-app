@@ -7,6 +7,7 @@ import Signup from './pages/Signup';
 import Board from './pages/Board';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import './css/custom-scrollbar.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

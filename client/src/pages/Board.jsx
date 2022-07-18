@@ -1,14 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import boardApi from '../api/boardApi';
-import {
-	Box,
-	Button,
-	Divider,
-	IconButton,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Box, IconButton, TextField } from '@mui/material';
 import StarOutlinedIcon from '@mui/icons-material/StarOutlined';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -16,6 +9,7 @@ import EmojiPicker from '../components/common/EmojiPicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBoards } from '../redux/features/boardSlice.js';
 import { setFavouriteList } from '../redux/features/favouritesSlice';
+import Kanban from '../components/common/Kanban';
 
 let timer;
 const timeout = 500;
@@ -209,23 +203,9 @@ const Board = () => {
 						}}
 					/>
 				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'space-between',
-						width: '100%',
-					}}
-				>
-					<Button>Add section</Button>
-					<Typography variant="body2" fontWeight="700">
-						{sections.length} Sections
-					</Typography>
-				</Box>
-				<Divider sx={{ margin: '10px 0' }} />
-				{/* <Box>
+				<Box>
 					<Kanban data={sections} boardId={boardId} />
-				</Box> */}
+				</Box>
 			</Box>
 		</>
 	);
