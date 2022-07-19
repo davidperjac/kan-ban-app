@@ -7,9 +7,12 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EmojiPicker from '../components/common/EmojiPicker';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBoards } from '../redux/features/boardSlice.js';
 import { setFavouriteList } from '../redux/features/favouritesSlice';
 import Kanban from '../components/common/Kanban';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { setBoards } from '../redux/features/boardSlice.js';
+import { setTheme } from '../redux/features/themeSlice';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 let timer;
 const timeout = 500;
@@ -25,6 +28,7 @@ const Board = () => {
 	const { boardId } = useParams();
 	const boards = useSelector((state) => state.board.value);
 	const favouriteList = useSelector((state) => state.favourites.value);
+	const theme = useSelector((state) => state.theme.value);
 
 	useEffect(() => {
 		const getBoard = async () => {
@@ -165,6 +169,17 @@ const Board = () => {
 						<StarOutlinedIcon color="warning" />
 					) : (
 						<StarBorderOutlinedIcon />
+					)}
+				</IconButton>
+				<IconButton
+					aria-label="delete"
+					size="large"
+					onClick={() => dispatch(setTheme(!theme))}
+				>
+					{theme ? (
+						<DarkModeIcon fontSize="inherit" />
+					) : (
+						<LightModeIcon fontSize="inherit" />
 					)}
 				</IconButton>
 				<IconButton variant="outlined" color="error" onClick={deleteBoard}>

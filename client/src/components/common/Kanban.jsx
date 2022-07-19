@@ -1,4 +1,3 @@
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import {
 	Box,
 	Button,
@@ -8,11 +7,13 @@ import {
 	IconButton,
 	Card,
 } from '@mui/material';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useEffect, useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import sectionApi from '../../api/sectionApi';
 import taskApi from '../../api/taskApi';
+import TaskModal from './TaskModal';
 
 let timer;
 const timeout = 500;
@@ -20,21 +21,18 @@ const timeout = 500;
 const Kanban = (props) => {
 	const boardId = props.boardId;
 	const [data, setData] = useState([]);
+	const [selectedTask, setSelectedTask] = useState(undefined);
 
 	useEffect(() => {
 		setData(props.data);
 	}, [props.data]);
 
 	const onDragEnd = async ({ source, destination }) => {
-		if (!destination) {
-			return;
-		}
-
+		if (!destination) return;
 		const sourceColIndex = data.findIndex((e) => e._id === source.droppableId);
 		const destinationColIndex = data.findIndex(
 			(e) => e._id === destination.droppableId
 		);
-
 		const sourceCol = data[sourceColIndex];
 		const destinationCol = data[destinationColIndex];
 
@@ -63,18 +61,6 @@ const Kanban = (props) => {
 				destinationSectionId: destinationSectionId,
 			});
 			setData(data);
-		} catch (err) {
-			alert(err);
-		}
-	};
-
-	const createTask = async (sectionId) => {
-		try {
-			const task = await taskApi.create(boardId, { sectionId });
-			const newData = [...data];
-			const index = newData.findIndex((e) => e._id === sectionId);
-			newData[index].tasks.unshift(task);
-			setData(newData);
 		} catch (err) {
 			alert(err);
 		}
@@ -115,6 +101,38 @@ const Kanban = (props) => {
 		}, timeout);
 	};
 
+	const createTask = async (sectionId) => {
+		try {
+			const task = await taskApi.create(boardId, { sectionId });
+			const newData = [...data];
+			const index = newData.findIndex((e) => e._id === sectionId);
+			newData[index].tasks.unshift(task);
+			setData(newData);
+		} catch (err) {
+			alert(err);
+		}
+	};
+
+	const onUpdateTask = (task) => {
+		const newData = [...data];
+		const sectionIndex = newData.findIndex((e) => e._id === task.section._id);
+		const taskIndex = newData[sectionIndex].tasks.findIndex(
+			(e) => e._id === task._id
+		);
+		newData[sectionIndex].tasks[taskIndex] = task;
+		setData(newData);
+	};
+
+	const onDeleteTask = (task) => {
+		const newData = [...data];
+		const sectionIndex = newData.findIndex((e) => e._id === task.section._id);
+		const taskIndex = newData[sectionIndex].tasks.findIndex(
+			(e) => e._id === task._id
+		);
+		newData[sectionIndex].tasks.splice(taskIndex, 1);
+		setData(newData);
+	};
+
 	return (
 		<>
 			<Box
@@ -141,7 +159,7 @@ const Kanban = (props) => {
 				>
 					{data.map((section) => (
 						<div key={section._id} style={{ width: '300px' }}>
-							<Droppable key={section._id} droppableId={section._id}>
+							<Droppable key={section.id} droppableId={section._id}>
 								{(provided) => (
 									<Box
 										ref={provided.innerRef}
@@ -219,7 +237,7 @@ const Kanban = (props) => {
 																? 'grab'
 																: 'pointer!important',
 														}}
-														// onClick={() => setSelectedTask(task)}
+														onClick={() => setSelectedTask(task)}
 													>
 														<Typography>
 															{task.title === '' ? 'Untitled' : task.title}
@@ -236,13 +254,13 @@ const Kanban = (props) => {
 					))}
 				</Box>
 			</DragDropContext>
-			{/* <TaskModal
+			<TaskModal
 				task={selectedTask}
 				boardId={boardId}
 				onClose={() => setSelectedTask(undefined)}
 				onUpdate={onUpdateTask}
 				onDelete={onDeleteTask}
-			/> */}
+			/>
 		</>
 	);
 };

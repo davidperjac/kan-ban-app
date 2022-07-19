@@ -22,6 +22,7 @@ const Sidebar = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const user = useSelector((state) => state.user.value);
+	const theme = useSelector((state) => state.theme.value);
 	let boards = useSelector((state) => state.board.value);
 	const { boardId } = useParams();
 	const [activeIndex, setActiveIndex] = useState(0);
@@ -95,7 +96,7 @@ const Sidebar = () => {
 				sx={{
 					width: sidebarWidth,
 					height: '100vh',
-					backgroundColor: assets.colors.secondary,
+					backgroundColor: theme ? '#292929' : '#f0f0f0',
 				}}
 			>
 				<ListItem>

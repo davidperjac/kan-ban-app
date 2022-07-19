@@ -1,8 +1,8 @@
 const router = require('express').Router({ mergeParams: true });
 const { param, body } = require('express-validator');
 const tokenHandler = require('../handlers/tokenHandler');
-const taskController = require('../controllers/task');
 const validation = require('../handlers/validation');
+const taskController = require('../controllers/task');
 
 router.post(
 	'/',
@@ -40,9 +40,9 @@ router.delete(
 			return Promise.reject('invalid board id');
 		} else return Promise.resolve();
 	}),
-	param('sectionId').custom((value) => {
+	param('taskId').custom((value) => {
 		if (!validation.isObjectId(value)) {
-			return Promise.reject('invalid section id');
+			return Promise.reject('invalid task id');
 		} else return Promise.resolve();
 	}),
 	validation.validate,
@@ -57,9 +57,9 @@ router.put(
 			return Promise.reject('invalid board id');
 		} else return Promise.resolve();
 	}),
-	param('sectionId').custom((value) => {
+	param('taskId').custom((value) => {
 		if (!validation.isObjectId(value)) {
-			return Promise.reject('invalid section id');
+			return Promise.reject('invalid task id');
 		} else return Promise.resolve();
 	}),
 	validation.validate,

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Sidebar from '../common/Sidebar';
 import Loading from '../common/Loading';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 
 const AppLayout = () => {
 	const [loading, setLoading] = useState(false);
