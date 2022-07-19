@@ -12,6 +12,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useEffect, useState } from 'react';
 import sectionApi from '../../api/sectionApi';
+import taskApi from '../../api/taskApi';
 
 let timer;
 const timeout = 500;
@@ -24,7 +25,60 @@ const Kanban = (props) => {
 		setData(props.data);
 	}, [props.data]);
 
-	const onDragEnd = () => {};
+	const onDragEnd = async ({ source, destination }) => {
+		if (!destination) {
+			return;
+		}
+
+		const sourceColIndex = data.findIndex((e) => e._id === source.droppableId);
+		const destinationColIndex = data.findIndex(
+			(e) => e._id === destination.droppableId
+		);
+
+		const sourceCol = data[sourceColIndex];
+		const destinationCol = data[destinationColIndex];
+
+		const sourceSectionId = sourceCol._id;
+		const destinationSectionId = destinationCol._id;
+
+		const sourceTasks = [...sourceCol.tasks];
+		const destinationTasks = [...destinationCol.tasks];
+
+		if (source.droppableId !== destination.droppableId) {
+			const [removed] = sourceTasks.splice(source.index, 1);
+			destinationTasks.splice(destination.index, 0, removed);
+			data[sourceColIndex].tasks = sourceTasks;
+			data[destinationColIndex].tasks = destinationTasks;
+		} else {
+			const [removed] = destinationTasks.splice(source.index, 1);
+			destinationTasks.splice(destination.index, 0, removed);
+			data[destinationColIndex].tasks = destinationTasks;
+		}
+
+		try {
+			await taskApi.updatePosition(boardId, {
+				resourceList: sourceTasks,
+				destinationList: destinationTasks,
+				resourceSectionId: sourceSectionId,
+				destinationSectionId: destinationSectionId,
+			});
+			setData(data);
+		} catch (err) {
+			alert(err);
+		}
+	};
+
+	const createTask = async (sectionId) => {
+		try {
+			const task = await taskApi.create(boardId, { sectionId });
+			const newData = [...data];
+			const index = newData.findIndex((e) => e._id === sectionId);
+			newData[index].tasks.unshift(task);
+			setData(newData);
+		} catch (err) {
+			alert(err);
+		}
+	};
 
 	const createSection = async () => {
 		try {
@@ -130,7 +184,7 @@ const Kanban = (props) => {
 													color: 'gray',
 													'&:hover': { color: 'green' },
 												}}
-												// onClick={() => createTask(section.id)}
+												onClick={() => createTask(section._id)}
 											>
 												<AddOutlinedIcon />
 											</IconButton>
@@ -149,8 +203,8 @@ const Kanban = (props) => {
 										{/* tasks */}
 										{section.tasks.map((task, index) => (
 											<Draggable
-												key={task.id}
-												draggableId={task.id}
+												key={task._id}
+												draggableId={task._id}
 												index={index}
 											>
 												{(provided, snapshot) => (
