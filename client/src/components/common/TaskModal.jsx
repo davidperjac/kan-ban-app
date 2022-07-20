@@ -18,17 +18,17 @@ import taskApi from '../../api/taskApi';
 import '../../css/custom-editor.css';
 
 const modalStyle = {
-	outline: 'none',
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: '50%',
 	bgcolor: 'background.paper',
 	border: '0px solid #000',
-	boxShadow: 24,
-	p: 1,
+	position: 'absolute',
+	outline: 'none',
 	height: '80%',
+	boxShadow: 24,
+	width: '50%',
+	left: '50%',
+	top: '50%',
+	p: 1,
 };
 
 let timer;
@@ -98,8 +98,6 @@ const TaskModal = (props) => {
 	const updateContent = async (event, editor) => {
 		clearTimeout(timer);
 		const data = editor.getData();
-
-		console.log({ isModalClosed });
 
 		if (!isModalClosed) {
 			timer = setTimeout(async () => {

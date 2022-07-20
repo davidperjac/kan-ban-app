@@ -114,6 +114,8 @@ const Kanban = (props) => {
 	};
 
 	const onUpdateTask = (task) => {
+		console.log(task);
+		console.log(data);
 		const newData = [...data];
 		const sectionIndex = newData.findIndex((e) => e._id === task.section._id);
 		const taskIndex = newData[sectionIndex].tasks.findIndex(
@@ -159,7 +161,7 @@ const Kanban = (props) => {
 				>
 					{data.map((section) => (
 						<div key={section._id} style={{ width: '300px' }}>
-							<Droppable key={section.id} droppableId={section._id}>
+							<Droppable key={section._id} droppableId={section._id}>
 								{(provided) => (
 									<Box
 										ref={provided.innerRef}

@@ -44,7 +44,7 @@ exports.getOne = async (req, res) => {
 		if (!board) return res.status(404).json('Board not found');
 		const sections = await Section.find({ board: boardId });
 		for (const section of sections) {
-			const tasks = await Task.find({ section: section.id })
+			const tasks = await Task.find({ section: section._id })
 				.populate('section')
 				.sort('-position');
 			section._doc.tasks = tasks;
