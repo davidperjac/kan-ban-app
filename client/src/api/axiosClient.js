@@ -1,7 +1,7 @@
 import axios from 'axios';
 import queryString from 'query-string';
 
-const baseURL = process.env.SERVER;
+const baseURL = import.meta.env.SERVER;
 const getToken = () => localStorage.getItem('token');
 
 const axiosClient = axios.create({
