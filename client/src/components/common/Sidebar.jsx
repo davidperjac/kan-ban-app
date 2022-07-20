@@ -34,7 +34,7 @@ const Sidebar = () => {
 				const res = await boardApi.getAll();
 				dispatch(setBoards(res));
 			} catch (err) {
-				alert(err);
+				console.log(err);
 			}
 		};
 		getBoards();

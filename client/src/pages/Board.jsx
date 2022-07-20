@@ -41,7 +41,7 @@ const Board = () => {
 				setIsFavourite(favourite);
 				setIcon(icon);
 			} catch (err) {
-				alert(err);
+				console.log(err);
 			}
 		};
 		getBoard();

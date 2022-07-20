@@ -41,7 +41,6 @@ const Login = () => {
 			localStorage.setItem('token', res.token);
 			navigate('/');
 		} catch (err) {
-			console.log(err);
 			const errors = err.data.errors;
 			errors.forEach((e) => {
 				if (e.param === 'username') {
