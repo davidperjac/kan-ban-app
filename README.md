@@ -1,9 +1,9 @@
-#KanBan Productivity App
+# KanBan Productivity App
 
 ## About
 
 This is a Full-Stack MERN App that allows the users to use the KanBan methodology.
-It was built with React, Redux and Material UI on the Client-Side, and 
+It was built with React, Redux and Material UI on the Client-Side, and
 MongoDB and Express on the Backend-Side.
 
 ## Available Scripts
@@ -21,4 +21,3 @@ In the **server** directory, you can run:
 
 Runs the server in the development mode.
 Open http://localhost:3001 to view it in your browser.
-
